@@ -1,0 +1,587 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_PSHRtoAM_name": {
+            "defaultValue": "PSHRtoAM",
+            "type": "String"
+        },
+        "integrationAccounts_BizTalktoAzureMigration_externalid": {
+            "defaultValue": "/subscriptions/98f767bd-d0d7-4699-acab-0dd799ce240d/resourceGroups/ES-HR-Logic-Apps/providers/Microsoft.Logic/integrationAccounts/BizTalktoAzureMigration",
+            "type": "String"
+        },
+        "connections_azureloganalyticsdatacollector_externalid": {
+            "defaultValue": "/subscriptions/98f767bd-d0d7-4699-acab-0dd799ce240d/resourceGroups/ES-HR-Logic-Apps/providers/Microsoft.Web/connections/azureloganalyticsdatacollector",
+            "type": "String"
+        },
+        "connections_sql_4_externalid": {
+            "defaultValue": "/subscriptions/98f767bd-d0d7-4699-acab-0dd799ce240d/resourceGroups/ES-HR-Logic-Apps/providers/Microsoft.Web/connections/sql-4",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_PSHRtoAM_name')]",
+            "location": "eastus",
+            "properties": {
+                "state": "Enabled",
+                "integrationAccount": {
+                    "id": "[parameters('integrationAccounts_BizTalktoAzureMigration_externalid')]"
+                },
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "manual": {
+                            "type": "Request",
+                            "kind": "Http",
+                            "inputs": {
+                                "schema": {
+                                    "DSG_POS_MSG": {
+                                        "FieldTypes": {
+                                            "DSG_DERIVED_POS": {
+                                                "ACCT_CD": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "BUSINESS_UNIT": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "DEPTID": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "DESCR": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "DIVISION": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "DSG_BIRTHDATE_MMDD": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "DSG_DIVISION_DESCR": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "DSG_POS_ACTN_CD": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "EFFDT": {
+                                                    "_type": "DATE"
+                                                },
+                                                "EMPLID": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "EMPL_STATUS": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "EMPL_TYPE": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "EXPECTED_END_DATE": {
+                                                    "_type": "DATE"
+                                                },
+                                                "FIRST_NAME": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "FLSA_STATUS": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "GRADE": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "JOBCODE": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "JOBCODE_DESCR": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "LAST_NAME": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "LOCATION": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "LOCATION_DESCR": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "MANAGER_ID": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "MIDDLE_NAME": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "NATIONAL_ID": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "PER_ORG": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "POSTAL": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "SAL_ADMIN_PLAN": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "START_DATE": {
+                                                    "_type": "DATE"
+                                                },
+                                                "_class": "R"
+                                            },
+                                            "PSCAMA": {
+                                                "AUDIT_ACTN": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "BASE_LANGUAGE_CD": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "LANGUAGE_CD": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "MSGNODENAME": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "MSG_SEQ_FLG": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "PROCESS_INSTANCE": {
+                                                    "_type": "NUMBER"
+                                                },
+                                                "PUBLISH_RULE_ID": {
+                                                    "_type": "CHAR"
+                                                },
+                                                "_class": "R"
+                                            }
+                                        },
+                                        "MsgData": {
+                                            "Transaction": {
+                                                "DSG_DERIVED_POS": {
+                                                    "BUSINESS_UNIT": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "SSCBU"
+                                                    },
+                                                    "DEPTID": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "90544"
+                                                    },
+                                                    "DESCR": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "IT Enterprise Business SysTech"
+                                                    },
+                                                    "DIVISION": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "DIV-IT"
+                                                    },
+                                                    "DSG_BIRTHDATE_MMDD": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "0101"
+                                                    },
+                                                    "DSG_DIVISION_DESCR": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "Division-InformationTechnology"
+                                                    },
+                                                    "DSG_POS_ACTN_CD": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "MA"
+                                                    },
+                                                    "EFFDT": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "2021-02-15"
+                                                    },
+                                                    "EMPLID": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "0268173"
+                                                    },
+                                                    "EMPL_STATUS": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "A"
+                                                    },
+                                                    "EMPL_TYPE": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "S"
+                                                    },
+                                                    "FIRST_NAME": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "John"
+                                                    },
+                                                    "FLSA_STATUS": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "E"
+                                                    },
+                                                    "GRADE": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "640"
+                                                    },
+                                                    "JOBCODE": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "54091"
+                                                    },
+                                                    "JOBCODE_DESCR": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "Software Engineer II"
+                                                    },
+                                                    "LAST_NAME": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "Units"
+                                                    },
+                                                    "LOCATION": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "CORP"
+                                                    },
+                                                    "LOCATION_DESCR": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "Customer Support Center"
+                                                    },
+                                                    "MANAGER_ID": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "0499696"
+                                                    },
+                                                    "MIDDLE_NAME": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "P"
+                                                    },
+                                                    "NATIONAL_ID": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "9999"
+                                                    },
+                                                    "PER_ORG": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "EMP"
+                                                    },
+                                                    "POSTAL": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "15108"
+                                                    },
+                                                    "SAL_ADMIN_PLAN": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "SL1"
+                                                    },
+                                                    "START_DATE": {
+                                                        "_IsChanged": "Y",
+                                                        "__text": "2012-07-02"
+                                                    },
+                                                    "_class": "R"
+                                                },
+                                                "PSCAMA": {
+                                                    "BASE_LANGUAGE_CD": "ENG",
+                                                    "LANGUAGE_CD": "ENG",
+                                                    "PROCESS_INSTANCE": "0",
+                                                    "_class": "R"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "actions": {
+                        "Log_Failure": {
+                            "actions": {
+                                "Response_Failure": {
+                                    "runAfter": {},
+                                    "type": "Response",
+                                    "kind": "Http",
+                                    "inputs": {
+                                        "body": "[concat('<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<ns0:reply xmlns:ns0=\"http://DSG.', parameters('workflows_PSHRtoAM_name'), '\">\n    <ns0:operations namespace=\"PublishSubscribe\" interface=\"PublishSubscribeSystem\">\n        <ns0:invoke opnum=\"1\" member=\"PingNode\">\n            <ns0:return type=\"string\">@{outputs(''SPInvoke'')}</ns0:return>\n        </ns0:invoke>\n    </ns0:operations>\n</ns0:reply>')]",
+                                        "statusCode": 400
+                                    }
+                                },
+                                "Send_Data": {
+                                    "runAfter": {
+                                        "Response_Failure": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "body": "[concat('{\n\"Message\": \"Failed to process ', parameters('workflows_PSHRtoAM_name'), ' SQL Proc\",\n\"Emp ID\": \"@{body(''Parse_JSON'')?[''ns0:p_StorePSRecord'']?[''ns0:EMPLID'']}\",\n\"First Name\": \"@{body(''Parse_JSON'')?[''ns0:p_StorePSRecord'']?[''ns0:FIRST_NAME'']}\",\n\"Middle Name\": \"@{body(''Parse_JSON'')?[''ns0:p_StorePSRecord'']?[''ns0:MIDDLE_NAME'']}\",\n\"Last Name\": \"@{body(''Parse_JSON'')?[''ns0:p_StorePSRecord'']?[''ns0:LAST_NAME'']}\"\n}')]",
+                                        "headers": {
+                                            "Log-Type": "[concat(parameters('workflows_PSHRtoAM_name'), 'FailLog')]"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['azureloganalyticsdatacollector']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/api/logs"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "PStoFIM_Inovke_SQL_Proc": [
+                                    "Failed"
+                                ]
+                            },
+                            "type": "Scope"
+                        },
+                        "Log_TimeOut": {
+                            "actions": {
+                                "Response_Timeout": {
+                                    "runAfter": {},
+                                    "type": "Response",
+                                    "kind": "Http",
+                                    "inputs": {
+                                        "body": "[concat('<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<ns0:reply xmlns:ns0=\"http://DSG.', parameters('workflows_PSHRtoAM_name'), '\">\n    <ns0:operations namespace=\"PublishSubscribe\" interface=\"PublishSubscribeSystem\">\n        <ns0:invoke opnum=\"1\" member=\"PingNode\">\n            <ns0:return type=\"number\">1</ns0:return>\n        </ns0:invoke>\n    </ns0:operations>\n</ns0:reply>')]",
+                                        "statusCode": 500
+                                    }
+                                },
+                                "Send_Data_2": {
+                                    "runAfter": {
+                                        "Response_Timeout": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "body": "[concat('{\n\"Message\": \"Failed to process ', parameters('workflows_PSHRtoAM_name'), ' Time Out\"\n}')]",
+                                        "headers": {
+                                            "Log-Type": "[concat(parameters('workflows_PSHRtoAM_name'), 'TimeOut')]"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['azureloganalyticsdatacollector']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/api/logs"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "PStoFIM_Inovke_SQL_Proc": [
+                                    "TimedOut"
+                                ]
+                            },
+                            "type": "Scope"
+                        },
+                        "PSReqtoReply": {
+                            "runAfter": {},
+                            "type": "Xslt",
+                            "inputs": {
+                                "content": "@{triggerBody()}",
+                                "integrationAccount": {
+                                    "map": {
+                                        "name": "mapMessageToReply"
+                                    }
+                                }
+                            }
+                        },
+                        "PStoFIM_Inovke_SQL_Proc": {
+                            "actions": {
+                                "PSReqtoFImSQLProc": {
+                                    "runAfter": {},
+                                    "type": "Xslt",
+                                    "inputs": {
+                                        "content": "@{triggerBody()}",
+                                        "integrationAccount": {
+                                            "map": {
+                                                "name": "PS_to_StorePSRecordReq"
+                                            }
+                                        },
+                                        "transformOptions": "ApplyXsltOutputAttributes"
+                                    }
+                                },
+                                "Parse_JSON": {
+                                    "runAfter": {
+                                        "PSReqtoFImSQLProc": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "trackedProperties": {
+                                        "EmpID": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:EMPLID']"
+                                    },
+                                    "type": "ParseJson",
+                                    "inputs": {
+                                        "content": "@json(xml(body('PSReqtoFImSQLProc')))",
+                                        "schema": {
+                                            "properties": {
+                                                "ns0:p_StorePSRecord": {
+                                                    "properties": {
+                                                        "ns0:ACCT_CD": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:BIRTHDATE": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:BusinessUnit": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:DEPTID": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:DEPT_DESCR": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:DIVISION": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:DSG_DIVISION_DESCR": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:EMPLID": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:EMPL_STATUS": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:EMPL_TYPE": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:EXPECTED_END_DATE": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:FIRST_NAME": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:FLSA_STATUS": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:GRADE": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:JOBCODE": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:JOB_DESCR": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:LAST_NAME": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:LOCATION_DESCR": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:Location": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:MANAGER_ID": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:MIDDLE_NAME": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:NATIONAL_ID": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:PER_ORG": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:POSTAL": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:SAL_ADMIN_PLAN": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:START_DATE": {
+                                                            "type": "string"
+                                                        },
+                                                        "ns0:Suffix": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "Response": {
+                                    "runAfter": {
+                                        "SPInvoke": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Response",
+                                    "kind": "Http",
+                                    "inputs": {
+                                        "body": "@body('PSReqtoReply')",
+                                        "statusCode": 200
+                                    }
+                                },
+                                "SPInvoke": {
+                                    "runAfter": {
+                                        "Parse_JSON": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "body": {
+                                            "ACCT_CD": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:ACCT_CD']",
+                                            "BIRTHDATE": "@{body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:BIRTHDATE']}",
+                                            "BusinessUnit": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:BusinessUnit']",
+                                            "DEPTID": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:DEPTID']",
+                                            "DEPT_DESCR": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:DEPT_DESCR']",
+                                            "DIVISION": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:DIVISION']",
+                                            "DSG_DIVISION_DESCR": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:DSG_DIVISION_DESCR']",
+                                            "EMPLID": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:EMPLID']",
+                                            "EMPL_STATUS": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:EMPL_STATUS']",
+                                            "EMPL_TYPE": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:EMPL_TYPE']",
+                                            "EXPECTED_END_DATE": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:EXPECTED_END_DATE']",
+                                            "FIRST_NAME": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:FIRST_NAME']",
+                                            "FLSA_STATUS": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:FLSA_STATUS']",
+                                            "GRADE": "@{body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:GRADE']}",
+                                            "JOBCODE": "@{body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:JOBCODE']}",
+                                            "JOB_DESCR": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:JOB_DESCR']",
+                                            "LAST_NAME": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:LAST_NAME']",
+                                            "LOCATION_DESCR": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:LOCATION_DESCR']",
+                                            "Location": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:Location']",
+                                            "MANAGER_ID": "@{body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:MANAGER_ID']}",
+                                            "MIDDLE_NAME": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:MIDDLE_NAME']",
+                                            "NATIONAL_ID": "@{body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:NATIONAL_ID']}",
+                                            "PER_ORG": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:PER_ORG']",
+                                            "POSTAL": "@{body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:POSTAL']}",
+                                            "SAL_ADMIN_PLAN": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:SAL_ADMIN_PLAN']",
+                                            "START_DATE": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:START_DATE']",
+                                            "Suffix": "@body('Parse_JSON')?['ns0:p_StorePSRecord']?['ns0:Suffix']"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['sql']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('default'))},@{encodeURIComponent(encodeURIComponent('default'))}/procedures/@{encodeURIComponent(encodeURIComponent('[dbo].[p_StorePSRecord]'))}"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "PSReqtoReply": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Scope"
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "azureloganalyticsdatacollector": {
+                                "connectionId": "[parameters('connections_azureloganalyticsdatacollector_externalid')]",
+                                "connectionName": "azureloganalyticsdatacollector",
+                                "id": "/subscriptions/98f767bd-d0d7-4699-acab-0dd799ce240d/providers/Microsoft.Web/locations/eastus/managedApis/azureloganalyticsdatacollector"
+                            },
+                            "sql": {
+                                "connectionId": "[parameters('connections_sql_4_externalid')]",
+                                "connectionName": "sql-4",
+                                "id": "/subscriptions/98f767bd-d0d7-4699-acab-0dd799ce240d/providers/Microsoft.Web/locations/eastus/managedApis/sql"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
