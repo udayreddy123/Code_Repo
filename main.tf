@@ -1,8 +1,8 @@
 terraform {
   backend "azurerm" {
     resource_group_name   = "proddsgstatfile"
-    storage_account_name  = "proddsgstorageac "
-    container_name        = "terraform-state "
+    storage_account_name  = "proddsgstorageac"
+    container_name        = "terraform-state"
     key                   = "terraform.tfstate"
   }
 }
